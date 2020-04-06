@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "78984790293",
+    "firebase_url": "https://memow-auth-test.firebaseio.com",
+    "project_id": "memow-auth-test",
+    "storage_bucket": "memow-auth-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78984790293:android:f89548391148f34d5ee91c",
+        "android_client_info": {
+          "package_name": "com.example.memowtask14userauth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "78984790293-6t9ahaouc25vmk9h4bcntnb4hpkb184s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKRRk1fYpOgADEPCXC7sQBulkgvn3dXYc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "78984790293-6t9ahaouc25vmk9h4bcntnb4hpkb184s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
