@@ -22,7 +22,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ホーム画面'),
+        title: Text('ログイン / 会員登録'),
       ),
       body: Center(
         child: Column(

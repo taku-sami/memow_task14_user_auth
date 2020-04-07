@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:memowtask14userauth/screens/home_screen.dart';
+import 'profile_registration_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -11,13 +11,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
   String mail;
   String password;
-  String error = '';
+  String errorMessage = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('registration screen'),
+        title: Text('会員登録'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -53,37 +53,30 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               SizedBox(
                 height: 50.0,
               ),
-              Text('$error'),
+              Text('$errorMessage'),
               FlatButton(
                 child: Text('登録'),
                 color: Colors.green,
                 textColor: Colors.white,
                 onPressed: () async {
                   try {
-                    final newUser = await _auth.createUserWithEmailAndPassword(
-                        email: mail, password: password);
-                    print('$newUserです');
-                    if (newUser != null) {
+                    final mailCheck =
+                        await _auth.fetchSignInMethodsForEmail(email: mail);
+
+                    print(mailCheck);
+                    if (mailCheck[0] == 'password') {
                       setState(() {
-                        error = 'このメールアドレスは既に登録されています';
-                        print('here');
+                        errorMessage = 'このメールアドレスは既に登録されています';
                       });
-                    } else {
-                      setState(() {
-                        print('testtest');
-                        error = '';
-                      });
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return HomeScreen();
-                          },
-                        ),
-                      );
                     }
-                  } catch (e) {
-                    print(e);
+                  } catch (error) {
+                    setState(() {
+                      errorMessage = '';
+                    });
+                    _pushPage(
+                      context,
+                      ProfileRegistrationScreen(mail, password),
+                    );
                   }
                 },
               ),
@@ -93,4 +86,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
     );
   }
+}
+
+void _pushPage(BuildContext context, Widget page) {
+  Navigator.push(
+    context,
+    MaterialPageRoute<void>(builder: (_) => page),
+  );
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -6,7 +8,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  @override
+  final _auth = FirebaseAuth.instance;
+  String mail;
+  String password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
+          padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
           child: Column(
             children: <Widget>[
               Text(
@@ -28,6 +33,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: InputDecoration(
                   labelText: 'Mail',
                 ),
+                onChanged: (newValue) {
+                  mail = newValue;
+                },
               ),
               TextField(
                 obscureText: true,
@@ -35,6 +43,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: InputDecoration(
                   labelText: 'Password',
                 ),
+                onChanged: (newValue) {
+                  password = newValue;
+                },
               ),
               SizedBox(
                 height: 50.0,
@@ -43,7 +54,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Text('ログイン'),
                 color: Colors.green,
                 textColor: Colors.white,
-                onPressed: () {},
+                onPressed: () async {
+                  try {
+                    final user = await _auth.signInWithEmailAndPassword(
+                        email: mail, password: password);
+                    if (user != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return HomeScreen();
+                          },
+                        ),
+                      );
+                    }
+                  } catch (error) {
+                    print(error);
+                  }
+                },
               ),
             ],
           ),
