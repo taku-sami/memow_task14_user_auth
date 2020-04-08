@@ -52,12 +52,13 @@ class InvitedScreen extends StatelessWidget {
                     'farmID': '$inviteCode',
                   });
 
-//                  _firestore.collection('farms').document(user.uid).setData(
-//                    {
-//                      'orner': '${user.uid}',
-//                      'member': '${user.uid}',
-//                    },
-//                  );
+                  _firestore
+                      .collection('farms')
+                      .document('$inviteCode')
+                      .collection('member')
+                      .add({
+                    'memberId': '${user.uid}',
+                  });
 
                   if (user != null) {
                     _pushPage(context, HomeScreen());

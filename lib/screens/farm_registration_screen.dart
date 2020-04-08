@@ -6,10 +6,10 @@ import 'package:memowtask14userauth/screens/home_screen.dart';
 final _firestore = Firestore.instance;
 
 class FarmRegistrationScreen extends StatefulWidget {
-  String mail;
-  String password;
-  String firstName;
-  String lastName;
+  final mail;
+  final password;
+  final firstName;
+  final lastName;
   FarmRegistrationScreen(
       this.mail, this.password, this.firstName, this.lastName);
 
@@ -77,9 +77,15 @@ class _FarmRegistrationScreenState extends State<FarmRegistrationScreen> {
                       'name': '$farmName',
                       'address': '$farmAddress',
                       'orner': '${user.uid}',
-                      'member': '${user.uid}',
                     },
                   );
+                  _firestore
+                      .collection('farms')
+                      .document('${user.uid}')
+                      .collection('member')
+                      .add({
+                    'memberId': '${user.uid}',
+                  });
 
                   if (user != null) {
                     _pushPage(context, HomeScreen());

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:memowtask14userauth/main.dart';
+import 'add_caw.dart';
 
 final _firestore = Firestore.instance;
 
@@ -85,6 +86,21 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(
               height: 40.0,
+            ),
+            FlatButton(
+              color: Colors.green,
+              textColor: Colors.white,
+              child: Text('牛の登録'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return AddCawScreen(farmId);
+                    },
+                  ),
+                );
+              },
             ),
             FlatButton(
               color: Colors.red,
