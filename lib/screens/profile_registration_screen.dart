@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'select_screen.dart';
 
 class ProfileRegistrationScreen extends StatefulWidget {
@@ -9,12 +10,57 @@ class ProfileRegistrationScreen extends StatefulWidget {
 }
 
 class _ProfileRegistrationScreenState extends State<ProfileRegistrationScreen> {
-  final _auth = FirebaseAuth.instance;
   String mail;
   String password;
   String firstName;
   String lastName;
+  String userId = '';
   String errorMessage = '';
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  bool logined = false;
+
+  void login() {
+    setState(() {
+      logined = true;
+    });
+  }
+
+  void logout() {
+    setState(() {
+      logined = false;
+    });
+  }
+
+  Future signInWithGoogle() async {
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+        idToken: googleSignInAuthentication.idToken,
+        accessToken: googleSignInAuthentication.accessToken);
+
+    final FirebaseUser user =
+        (await _auth.signInWithCredential(credential)).user;
+
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+
+    final FirebaseUser currentUser = await _auth.currentUser();
+    assert(user.uid == currentUser.uid);
+    setState(() {
+      userId = currentUser.uid;
+    });
+    login();
+  }
+
+  void signOutGoogle() async {
+    await googleSignIn.signOut();
+    logout();
+    print('User Sign Out Google');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +73,7 @@ class _ProfileRegistrationScreenState extends State<ProfileRegistrationScreen> {
           padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
           child: Column(
             children: <Widget>[
+              Text(userId),
               Text(
                 'ユーザー情報登録',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
@@ -101,6 +148,22 @@ class _ProfileRegistrationScreenState extends State<ProfileRegistrationScreen> {
                       SelectScreen(mail, password, firstName, lastName),
                     );
                   }
+                },
+              ),
+              FlatButton(
+                color: Colors.grey,
+                textColor: Colors.white,
+                child: Text('Googleでサインアップ'),
+                onPressed: () {
+                  signInWithGoogle();
+                },
+              ),
+              FlatButton(
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Text('ログアウト'),
+                onPressed: () {
+                  signOutGoogle();
                 },
               ),
             ],
