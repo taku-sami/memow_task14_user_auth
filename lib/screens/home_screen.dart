@@ -17,6 +17,9 @@ class _HomeScreenState extends State<HomeScreen> {
   String userFirstName;
   String userLastName;
   String userId;
+  String farmId;
+  String farmName;
+  String farmAddress;
 
   @override
   void initState() {
@@ -34,12 +37,19 @@ class _HomeScreenState extends State<HomeScreen> {
         });
         userId = loggedInUser.uid;
 
-        DocumentSnapshot data =
+        DocumentSnapshot userData =
             await _firestore.collection("users").document(userId).get();
+        setState(() {
+          userFirstName = userData['firstName'].toString();
+          userLastName = userData['lastName'].toString();
+          farmId = userData['farmID'].toString();
+        });
+        DocumentSnapshot farmData =
+            await _firestore.collection("farms").document(farmId).get();
 
         setState(() {
-          userFirstName = data['firstName'].toString();
-          userLastName = data['lastName'].toString();
+          farmName = farmData['name'].toString();
+          farmAddress = farmData['address'].toString();
         });
       }
     } catch (error) {
@@ -51,12 +61,20 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('ホーム画面'),
       ),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            Text(
+              '牧場名:$farmName',
+              style: TextStyle(fontSize: 40.0),
+            ),
+            Text(
+              '牧場名:$farmAddress',
+              style: TextStyle(fontSize: 40.0),
+            ),
             Text(
               '姓:$userFirstName',
               style: TextStyle(fontSize: 40.0),

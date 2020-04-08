@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:memowtask14userauth/screens/login_screen.dart';
-import 'package:memowtask14userauth/screens/registration_screen.dart';
+import 'package:memowtask14userauth/screens/profile_registration_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -57,7 +57,7 @@ class MyHomePage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return RegistrationScreen();
+                      return ProfileRegistrationScreen();
                     },
                   ),
                 );
