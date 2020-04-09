@@ -15,9 +15,11 @@ class _HomeScreenState extends State<HomeScreen> {
   FirebaseUser loggedInUser;
 
   final _auth = FirebaseAuth.instance;
+  String userName;
   String userFirstName;
   String userLastName;
   String userId;
+  String mail;
   String farmId;
   String farmName;
   String farmAddress;
@@ -37,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
           loggedInUser = user;
         });
         userId = loggedInUser.uid;
+        userName = loggedInUser.displayName;
+        mail = loggedInUser.email;
 
         DocumentSnapshot userData =
             await _firestore.collection("users").document(userId).get();
@@ -52,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           farmName = farmData['name'].toString();
           farmAddress = farmData['address'].toString();
         });
+        print(farmId);
       }
     } catch (error) {
       print(error);
@@ -64,58 +69,59 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text('ホーム画面'),
       ),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '牧場名:$farmName',
-              style: TextStyle(fontSize: 40.0),
-            ),
-            Text(
-              '牧場名:$farmAddress',
-              style: TextStyle(fontSize: 40.0),
-            ),
-            Text(
-              '姓:$userFirstName',
-              style: TextStyle(fontSize: 40.0),
-            ),
-            Text(
-              '名:$userLastName',
-              style: TextStyle(fontSize: 40.0),
-            ),
-            SizedBox(
-              height: 40.0,
-            ),
-            FlatButton(
-              color: Colors.green,
-              textColor: Colors.white,
-              child: Text('牛の登録'),
-              onPressed: () {
-                Navigator.push(
+      body: Column(
+        children: <Widget>[
+          Text(
+            '牧場名:$farmName',
+            style: TextStyle(fontSize: 20.0),
+          ),
+          Text(
+            'FarmID:$farmId',
+            style: TextStyle(fontSize: 20.0),
+          ),
+          Text(
+            '牧場名:$farmAddress',
+            style: TextStyle(fontSize: 20.0),
+          ),
+          Text(
+            '氏名:$userName',
+            style: TextStyle(fontSize: 20.0),
+          ),
+          Text(
+            'メール:$mail',
+            style: TextStyle(fontSize: 20.0),
+          ),
+          SizedBox(
+            height: 40.0,
+          ),
+          FlatButton(
+            color: Colors.green,
+            textColor: Colors.white,
+            child: Text('牛の登録'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return AddCawScreen(farmId);
+                  },
+                ),
+              );
+            },
+          ),
+          FlatButton(
+            color: Colors.red,
+            textColor: Colors.white,
+            child: Text('ログアウト'),
+            onPressed: () {
+              _auth.signOut();
+              Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return AddCawScreen(farmId);
-                    },
-                  ),
-                );
-              },
-            ),
-            FlatButton(
-              color: Colors.red,
-              textColor: Colors.white,
-              child: Text('ログアウト'),
-              onPressed: () {
-                _auth.signOut();
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    new MaterialPageRoute(builder: (context) => new MyApp()),
-                    (_) => false);
-              },
-            ),
-          ],
-        ),
+                  new MaterialPageRoute(builder: (context) => new MyApp()),
+                  (_) => false);
+            },
+          ),
+        ],
       ),
     );
   }

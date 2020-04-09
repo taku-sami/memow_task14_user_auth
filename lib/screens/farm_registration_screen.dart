@@ -6,13 +6,6 @@ import 'package:memowtask14userauth/screens/home_screen.dart';
 final _firestore = Firestore.instance;
 
 class FarmRegistrationScreen extends StatefulWidget {
-  final mail;
-  final password;
-  final firstName;
-  final lastName;
-  FarmRegistrationScreen(
-      this.mail, this.password, this.firstName, this.lastName);
-
   @override
   _FarmRegistrationScreenState createState() => _FarmRegistrationScreenState();
 }
@@ -32,8 +25,6 @@ class _FarmRegistrationScreenState extends State<FarmRegistrationScreen> {
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
         child: Column(
           children: <Widget>[
-            Text(widget.mail),
-            Text(widget.password),
             TextField(
               textAlign: TextAlign.center,
               decoration: InputDecoration(
@@ -61,15 +52,9 @@ class _FarmRegistrationScreenState extends State<FarmRegistrationScreen> {
               child: Text('登録'),
               onPressed: () async {
                 try {
-                  await _auth.createUserWithEmailAndPassword(
-                      email: widget.mail, password: widget.password);
-                  await _auth.signInWithEmailAndPassword(
-                      email: widget.mail, password: widget.password);
                   final user = await _auth.currentUser();
 
                   _firestore.collection('users').document(user.uid).setData({
-                    'firstName': '${widget.firstName}',
-                    'lastName': '${widget.lastName}',
                     'farmID': '${user.uid}',
                   });
                   _firestore.collection('farms').document(user.uid).setData(

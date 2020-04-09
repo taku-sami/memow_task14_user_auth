@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:memowtask14userauth/screens/login_screen.dart';
-import 'package:memowtask14userauth/screens/profile_registration_screen.dart';
+import 'package:memowtask14userauth/screens/auth_select_screen.dart';
+import 'package:memowtask14userauth/screens/login_select_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -38,7 +39,7 @@ class MyHomePage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return LoginScreen();
+                      return LoginSelectScreen();
                     },
                   ),
                 );
@@ -57,7 +58,7 @@ class MyHomePage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return ProfileRegistrationScreen();
+                      return AuthSelectScreen();
                     },
                   ),
                 );

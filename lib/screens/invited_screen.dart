@@ -7,14 +7,10 @@ final _firestore = Firestore.instance;
 
 class InvitedScreen extends StatelessWidget {
   final _auth = FirebaseAuth.instance;
-  String mail;
-  String password;
-  String firstName;
-  String lastName;
-  InvitedScreen(this.mail, this.password, this.firstName, this.lastName);
-  String inviteCode;
+
   @override
   Widget build(BuildContext context) {
+    String inviteCode;
     return Scaffold(
       appBar: AppBar(
         title: Text('招待されたページ'),
@@ -40,15 +36,9 @@ class InvitedScreen extends StatelessWidget {
               child: Text('送信'),
               onPressed: () async {
                 try {
-                  await _auth.createUserWithEmailAndPassword(
-                      email: mail, password: password);
-                  await _auth.signInWithEmailAndPassword(
-                      email: mail, password: password);
                   final user = await _auth.currentUser();
 
                   _firestore.collection('users').document(user.uid).setData({
-                    'firstName': '$firstName',
-                    'lastName': '$lastName',
                     'farmID': '$inviteCode',
                   });
 
@@ -61,7 +51,10 @@ class InvitedScreen extends StatelessWidget {
                   });
 
                   if (user != null) {
-                    _pushPage(context, HomeScreen());
+                    _pushPage(
+                      context,
+                      HomeScreen(),
+                    );
                   }
                 } catch (error) {
                   print(error);

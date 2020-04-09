@@ -2,13 +2,7 @@ import 'package:flutter/material.dart';
 import 'farm_registration_screen.dart';
 import 'invited_screen.dart';
 
-class SelectScreen extends StatelessWidget {
-  String mail;
-  String password;
-  String firstName;
-  String lastName;
-  SelectScreen(this.mail, this.password, this.firstName, this.lastName);
-
+class JoinFarmScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +22,7 @@ class SelectScreen extends StatelessWidget {
                 onPressed: () {
                   _pushPage(
                     context,
-                    FarmRegistrationScreen(mail, password, firstName, lastName),
+                    FarmRegistrationScreen(),
                   );
                 },
               ),
@@ -42,7 +36,7 @@ class SelectScreen extends StatelessWidget {
                 onPressed: () {
                   _pushPage(
                     context,
-                    InvitedScreen(mail, password, firstName, lastName),
+                    InvitedScreen(),
                   );
                 },
               ),
