@@ -28,6 +28,7 @@ dependencies:
   cloud_firestore: ^0.13.4+2
   google_sign_in: ^4.4.1
   cloud_functions: ^0.4.2+3
+  clipboard_manager: ^0.0.1
 
 dev_dependencies:
   flutter_test:

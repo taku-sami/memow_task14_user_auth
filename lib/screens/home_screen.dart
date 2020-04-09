@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:memowtask14userauth/main.dart';
 import 'add_caw.dart';
+import 'package:clipboard_manager/clipboard_manager.dart';
 
 final _firestore = Firestore.instance;
 
@@ -20,9 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
   String userLastName;
   String userId;
   String mail;
-  String farmId;
+  String farmId = '';
   String farmName;
   String farmAddress;
+  bool result = false;
 
   @override
   void initState() {
@@ -65,6 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String message = '招待コードは「$farmId」です。このIDを使用してログインしてください。';
+
     return Scaffold(
       appBar: AppBar(
         title: Text('ホーム画面'),
@@ -108,6 +112,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             },
+          ),
+          Builder(
+            //スナックバーを使用するにはビルダーでラップする必要あり
+            builder: (context) => FlatButton(
+              color: Colors.grey,
+              textColor: Colors.white,
+              child: Text('招待メッセージをコピー'),
+              onPressed: () {
+                ClipboardManager.copyToClipBoard(message).then((result) {
+                  final snackBar = SnackBar(
+                    content: Text('メッセージをコピーしました'),
+                    action: SnackBarAction(
+                      label: 'Undo',
+                      onPressed: () {},
+                    ),
+                  );
+                  Scaffold.of(context).showSnackBar(snackBar);
+                });
+              },
+            ),
           ),
           FlatButton(
             color: Colors.red,
